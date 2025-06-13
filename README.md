@@ -20,7 +20,7 @@ MyBlog is a web application built with Django that allows users to:
 ## 🚀 Features
 - User registration and login
 - Blog posting and editing
-- Comment system with threaded replies
+- Comment system 
 - User profile pages
 - Search functionality on blog posts
 - Responsive layout with Bootstrap
