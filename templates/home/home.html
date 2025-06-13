@@ -1,0 +1,33 @@
+{% extends "basic.html" %}
+
+{% block title %}Home{% endblock title %}
+{% block homeactive %}active{% endblock homeactive %}
+
+{% block body %}
+<div class="container my-5">
+  <div class="text-center mb-5">
+    <h1 class="display-4 fw-bold">📝 Welcome to My Blog</h1>
+    <p class="lead">Explore thoughts, stories, and insights</p>
+    <a href="/blog" class="btn btn-outline-dark mt-3">View All Posts</a>
+  </div>
+
+  <div class="row">
+    {% for post in posts %}
+    <div class="col-md-6 mb-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h4 class="card-title">{{ post.title }}</h4>
+          <p class="card-text text-muted small">
+            By <a href="/profile/{{ post.author }}" class="fw-semibold text-decoration-none">{{ post.author }}</a>
+            &nbsp;|&nbsp;
+            {{ post.timeStamp|date:"M d, Y" }}
+          </p>
+          <p class="card-text">{{ post.content|truncatewords:25 }}</p>
+          <a href="/blog/{{ post.slug }}" class="btn btn-primary btn-sm">Read More</a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock body %}

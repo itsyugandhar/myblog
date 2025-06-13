@@ -1,0 +1,65 @@
+
+{% extends 'basic.html'%}
+{% load extras %}
+
+
+
+{% block title %} Blog-Post{% endblock title %}
+{% block blogactive %}active{% endblock blogactive %}
+
+{% block body %}
+<div class= 'container my-3'>
+    <div class = 'blog-post'>
+        <h2 class = 'blog-post-title'> 
+            {{post.title}}
+        </h2>
+
+        <p class ='blog-post-meta'>
+                {{post.timeStamp}} by <a href='home/profile.html'> {{post.author}}</a>
+        </p>
+
+       <p>{{ post.content|linebreaks }}</p>
+
+
+
+    </div>
+
+</div>
+{% if user.is_authenticated %}
+<form action="/blog/postComment" method="post">{% csrf_token %}
+  {% csrf_token %}
+  <input type="hidden" name="postSno" value="{{ post.Sno }}">
+  <input type="hidden" name="parentSno" value="">
+  <textarea name="comment" class="form-control" rows="3" placeholder="Add a comment..."></textarea>
+  <button type="submit" class="btn btn-success mt-2">Post Comment</button>
+</form>
+{% else %}
+<p class="text-danger">Please <a href="#" data-bs-toggle="modal" data-bs-target="#loginmodel">login</a> to comment.</p>
+{% endif %}
+
+<h4 class="mt-5">Comments</h4>
+{% for comment in comments %}
+  <div class="card my-2 p-2">
+    <strong>{{ comment.user.username }}</strong> <small class="text-muted">{{ comment.timestamp }}</small>
+    <p>{{ comment.comment }}</p>
+
+    <!-- Reply Form -->
+    <form action="/blog/postComment" method="post">
+      {% csrf_token %}
+      <input type="hidden" name="postSno" value="{{ post.Sno }}">
+
+      <input type="hidden" name="parentSno" value="{{ comment.Sno }}">
+      <textarea name="comment" class="form-control" rows="2" placeholder="Reply..."></textarea>
+      <button type="submit" class="btn btn-sm btn-outline-primary mt-1">Reply</button>
+    </form>
+
+    {% for reply in replyDict|get_item:comment.Sno %}
+      <div class="ms-4 mt-2 border-start ps-3">
+        <strong>{{ reply.user.username }}</strong> <small class="text-muted">{{ reply.timestamp }}</small>
+        <p>{{ reply.comment }}</p>
+      </div>
+    {% endfor %}
+  </div>
+{% endfor %}
+
+{% endblock body %}

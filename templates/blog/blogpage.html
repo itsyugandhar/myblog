@@ -1,0 +1,45 @@
+{% extends "basic.html" %}
+
+
+{% block title %} Blog-Page{% endblock title %}
+{% block blogactive %} active{% endblock blogactive %}
+{% block body %}
+
+{% if user.is_authenticated %}
+    <a href="/blog/create/" class="btn btn-primary mb-3">+ Create Blog</a>
+{% endif %}
+<h2>Recent Blogs Blogs</h2>
+<div class='container'>
+     {% for post in allposts %}
+<div class="row mb-2">
+  <div class="col-md-10">
+    <div
+      class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative"
+    >
+      <div class="col p-4 d-flex flex-column position-static">
+        <strong class="d-inline-block mb-2 text-primary-emphasis"> By {{post.author}}</strong>
+        <h3 class="mb-0"> {{post.title}}</h3>
+        <div class="mb-1 text-body-secondary">{{post.timeStamp}}</div>
+
+        <div>{{ post.content|linebreaksbr |truncatechars:350}}</div>
+
+        {% comment %} <p class="card-text mb-auto">
+         {{post.content | truncatechars:350}}
+        </p> {% endcomment %}
+        <div class="d-flex">
+        <a href="/blog/{{post.slug}}" role='button' class="btn btn-primary btn-sm w-auto mt-2">
+          Continue reading
+          
+        </a>
+    </div>
+      </div>
+    </div>
+  </div>
+  
+</div>
+{% endfor %}
+
+</div>
+
+
+{% endblock body %}
